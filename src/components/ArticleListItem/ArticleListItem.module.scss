@@ -1,0 +1,81 @@
+.info {
+  display: flex;
+  justify-content: space-between;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .title {
+        overflow-wrap: anywhere;
+        color: #1890ff;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .likes {
+        color: rgba(0, 0, 0, 0.75);
+        line-height: 16px;
+        display: flex;
+        gap: 4px;
+      }
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .tagsItem {
+        overflow-wrap: anywhere;
+        padding: 3px 6px;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  .author {
+    display: flex;
+    gap: 12px;
+
+    .authorInfo {
+      .name {
+        color: rgba(0, 0, 0, 0.85);
+        font-size: 18px;
+        line-height: 28px;
+      }
+
+      .date {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+        line-height: 22px;
+      }
+    }
+
+    .authorPhoto {
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+    }
+  }
+}
+
+.text {
+  overflow-wrap: anywhere;
+  width: 80%;
+  color: rgba(0, 0, 0, 0.75);
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 22px;
+}

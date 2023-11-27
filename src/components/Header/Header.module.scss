@@ -1,0 +1,65 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px 22px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+  }
+
+  .access {
+    display: flex;
+    gap: 27px;
+
+    a,
+    button {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+    }
+
+    .signUp,
+    .createArticle {
+      border-radius: 5px;
+      padding: 8px 16px;
+      color: #52c41a;
+      border: 1px solid #52c41a;
+    }
+
+    .signIn,
+    .logOut {
+      border-radius: 5px;
+      padding: 8px 16px;
+      color: #000000d9;
+      border: 1px solid #000000d9;
+    }
+  }
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .name {
+    color: #000000d9;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+  }
+}
