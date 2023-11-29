@@ -1,14 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
+import { Spin } from 'antd'
 
 import Layout from '../Layout'
 import ArticleList from '../ArticleList'
 import ArticlePage from '../../pages/ArticlePage'
-import ArticleActionsPage from '../../pages/ArticleActionsPage'
+const ArticleCreatePage = lazy(() => import('../../pages/ArticleCreatePage'))
+const ArticleEditPage = lazy(() => import('../../pages/ArticleEditPage'))
 import UserSignUpPage from '../../pages/UserSignUpPage'
 import UserSignInPage from '../../pages/UserSignInPage'
-import UserEditPage from '../../pages/UserEditPage'
+const UserEditPage = lazy(() => import('../../pages/UserEditPage'))
 import RequireAuth from '../../hoc/RequireAuth'
 import { getArticlesData } from '../../store/articlesSlice'
 
@@ -26,7 +28,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<ArticleList />} />
-        <Route path="articles" element={<ArticleList />} />
+        <Route path="articles" element={import('../ArticleList')} />
         <Route path="articles/:slug" element={<ArticlePage />} />
         <Route path="sign-up" element={<UserSignUpPage />} />
         <Route path="sign-in" element={<UserSignInPage />} />
@@ -34,7 +36,9 @@ const App = () => {
           path="profile"
           element={
             <RequireAuth>
-              <UserEditPage />
+              <Suspense fallback={<Spin size="large" />}>
+                <UserEditPage />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -42,7 +46,9 @@ const App = () => {
           path="new-article"
           element={
             <RequireAuth>
-              <ArticleActionsPage />
+              <Suspense fallback={<Spin size="large" />}>
+                <ArticleCreatePage />
+              </Suspense>
             </RequireAuth>
           }
         />
@@ -50,7 +56,9 @@ const App = () => {
           path="articles/:slug/edit"
           element={
             <RequireAuth>
-              <ArticleActionsPage edit={true} />
+              <Suspense fallback={<Spin size="large" />}>
+                <ArticleEditPage />
+              </Suspense>
             </RequireAuth>
           }
         />

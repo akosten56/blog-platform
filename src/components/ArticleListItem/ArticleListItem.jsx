@@ -4,10 +4,10 @@ import { nanoid } from 'nanoid'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { favoriteArticle, unfavoriteArticle } from '../../store/articlesSlice'
+import favorite from '../../assets/favorite.svg'
+import unfavorite from '../../assets/unfavorite.svg'
 
 import cl from './ArticleListItem.module.scss'
-import favorite from './favorite.svg'
-import unfavorite from './unfavorite.svg'
 
 const ArticleListItem = ({ slug, title, tagList, description, createdAt, favoritesCount, author, favorited }) => {
   const dispatch = useDispatch()

@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { createArticle, editArticle, getArticleDataBySlug } from '../../store/articlesSlice'
+import { createArticle, getArticleDataBySlug } from '../../store/articlesSlice'
 import MyError from '../../components/App/MyError'
+import ArticleForm from '../../components/ArticleForm'
+import cl from '../../components/ArticleForm/ArticleForm.module.scss'
 
-import cl from './ArticleActionsPage.module.scss'
-
-const ArticleActionsPage = ({ edit }) => {
+const ArticleCreatePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { slug } = useParams()
@@ -20,12 +20,9 @@ const ArticleActionsPage = ({ edit }) => {
   }, [slug])
 
   const { token } = useSelector((state) => state.userSlice.user)
-  const { currentArticleData, errorNotification, isLoaded } = useSelector((state) => state.articlesSlice)
-  const defaultArticleData = { title: '', tagList: [''], description: '', body: '' }
-  const { title, tagList, description, body } = edit && currentArticleData ? currentArticleData : defaultArticleData
+  const { errorNotification, isLoaded } = useSelector((state) => state.articlesSlice)
 
-  const [tags, setTags] = useState(tagList.map((tag) => [nanoid(), tag]))
-
+  const [tags, setTags] = useState([[nanoid(), '']])
   const defaultTags = Object.fromEntries(tags)
 
   const {
@@ -35,7 +32,7 @@ const ArticleActionsPage = ({ edit }) => {
     setError,
     resetField,
   } = useForm({
-    defaultValues: edit ? { title, description, body, ...defaultTags } : {},
+    defaultValues: { ...defaultTags },
   })
 
   const handleAddTag = () => setTags((state) => [...state, [nanoid(), '']])
@@ -55,20 +52,16 @@ const ArticleActionsPage = ({ edit }) => {
     const duplicates = Object.entries(tagsObj).filter((el, i, arr) => i !== arr.findIndex((e) => e[1] === el[1]))
     duplicates.forEach((el) => setError(el[0], { type: 'custom' }))
     if (duplicates.length) return
-
     const tagList = Object.values(tagsObj).filter((el) => el)
-    dispatch(
-      edit
-        ? editArticle({ token, slug, title, description, body, tagList })
-        : createArticle({ token, title, description, body, tagList })
-    )
+
+    dispatch(createArticle({ token, title, description, body, tagList }))
     navigate('/')
   }
 
   if (errorNotification) return <MyError />
-  if (!isLoaded || !currentArticleData) return <Spin size="large" />
+  if (!isLoaded) return <Spin size="large" />
 
-  const elements = tags.map((tag, i, arr) => {
+  const tagList = tags.map((tag, i, arr) => {
     const id = tag[0]
     return (
       <label key={id} className={`${cl.tag} ${errors[id] ? cl.invalid : ''}`}>
@@ -98,39 +91,7 @@ const ArticleActionsPage = ({ edit }) => {
     )
   })
 
-  return (
-    <form className={cl.article} onSubmit={handleSubmit(submit)}>
-      <h3 className={cl.articleTitle}>{edit ? 'Edit article' : 'Create new article'}</h3>
-      <label className={`${cl.title} ${errors.title ? cl.invalid : ''}`}>
-        Title
-        <input type="text" placeholder="Title" {...register('title', { required: true, maxLength: 80 })} />
-        <div className={cl.errorMessage}>The input is not valid Title</div>
-      </label>
-      <label className={`${cl.description} ${errors.description ? cl.invalid : ''}`}>
-        Short description
-        <input
-          type="text"
-          placeholder="Short description"
-          {...register('description', { required: true, maxLength: 120 })}
-        />
-        <div className={cl.errorMessage}>The input is not valid Description</div>
-      </label>
-      <label className={`${cl.body} ${errors.body ? cl.invalid : ''}`}>
-        Text
-        <textarea placeholder="Text" {...register('body', { required: true })} />
-        <div className={cl.errorMessage}>The input is not valid Text</div>
-      </label>
-
-      <div className={`${cl.tags} ${errors.tags ? cl.invalid : ''}`}>
-        Tags
-        {elements}
-      </div>
-
-      <button className={cl.submitButton} type="submit">
-        Send
-      </button>
-    </form>
-  )
+  return <ArticleForm {...{ mode: 'create', register, errors, handleSubmit, submit, tagList }} />
 }
 
-export default ArticleActionsPage
+export default ArticleCreatePage

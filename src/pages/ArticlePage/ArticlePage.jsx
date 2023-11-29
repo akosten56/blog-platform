@@ -8,10 +8,10 @@ import { Spin, Popconfirm, Button } from 'antd'
 
 import MyError from '../../components/App/MyError'
 import { getArticleDataBySlug, deleteArticle, favoriteArticle, unfavoriteArticle } from '../../store/articlesSlice'
+import favorite from '../../assets/favorite.svg'
+import unfavorite from '../../assets/unfavorite.svg'
 
 import cl from './ArticlePage.module.scss'
-import favorite from './favorite.svg'
-import unfavorite from './unfavorite.svg'
 
 const ArticlePage = () => {
   const dispatch = useDispatch()
